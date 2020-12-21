@@ -11,11 +11,17 @@ exports.getAllPets = (req, res) => {
 exports.addNewPet = (req, res) => {
   const sql = `INSERT INTO pets (animal, quantity) VALUES ('${req.body.animal}', ${req.body.quantity})`;
   db.query(sql, (err, pet) => {
-    if (err) throw err;
-    res.status(201).json({
-      message: 'Pet has been added',
-      pet,
-    });
+    if (err) {
+      res.status(400).json({
+        err: err,
+        message: 'Pet could not be added',
+      });
+    } else {
+      res.status(201).json({
+        message: 'Pet has been added',
+        pet,
+      });
+    }
   });
 };
 
